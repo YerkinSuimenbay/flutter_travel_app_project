@@ -4,19 +4,23 @@ import 'package:travel_app/widgets/app_text.dart';
 class AppButton extends StatelessWidget {
   final Color color;
   final Color bgColor;
-  double size;
+  final double size;
   final Color borderColor;
 
-  String text;
+  String? text;
+  bool? isIcon;
+  IconData? icon;
 
-  AppButton(
-      {Key? key,
-      required this.color,
-      required this.text,
-      required this.bgColor,
-      required this.borderColor,
-      required this.size})
-      : super(key: key);
+  AppButton({
+    Key? key,
+    required this.color,
+    required this.bgColor,
+    required this.borderColor,
+    required this.size,
+    this.text = 'Hi',
+    this.isIcon = false,
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +33,12 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: borderColor, width: 1)),
       child: Center(
-        child: AppText(
-          text: text,
-          color: color,
-        ),
+        child: isIcon == false
+            ? AppText(
+                text: text!,
+                color: color,
+              )
+            : Icon(icon, color: color),
       ),
     );
   }

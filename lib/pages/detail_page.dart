@@ -3,6 +3,7 @@ import 'package:travel_app/misc/colors.dart';
 import 'package:travel_app/widgets/app_button.dart';
 import 'package:travel_app/widgets/app_large_test.dart';
 import 'package:travel_app/widgets/app_text.dart';
+import 'package:travel_app/widgets/responsive_button.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({Key? key}) : super(key: key);
@@ -12,6 +13,9 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  int gottenStars = 4;
+  int selectedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +36,9 @@ class _DetailPageState extends State<DetailPage> {
                           image: AssetImage('images/mountain.jpeg'))),
                 )),
             Positioned(
+                top: 50,
                 left: 20,
                 right: 20,
-                top: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -54,7 +58,7 @@ class _DetailPageState extends State<DetailPage> {
                 child: Container(
                   padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
                   width: MediaQuery.of(context).size.width,
-                  height: 400,
+                  height: 800, // TODO: to be corrected
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -134,7 +138,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       Wrap(
                         children: List.generate(5, (index) {
-                          bool isCurrent = index == 2;
+                          bool isCurrent = index == selectedIndex;
                           Color bgColor = AppColors.buttonBackground;
                           Color color = Colors.black87;
                           if (isCurrent) {
@@ -142,16 +146,66 @@ class _DetailPageState extends State<DetailPage> {
                             color = Colors.white;
                           }
 
-                          return AppButton(
-                              color: color,
-                              text: '${index + 1}',
-                              bgColor: bgColor,
-                              borderColor: bgColor,
-                              size: 50);
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = index;
+                              });
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: AppButton(
+                                  color: color,
+                                  text: '${index + 1}',
+                                  // icon: Icons.favorite_border,
+                                  // isIcon: true,
+                                  bgColor: bgColor,
+                                  borderColor: bgColor,
+                                  size: 50),
+                            ),
+                          );
                         }),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      AppLargeText(
+                        text: 'Description',
+                        color: Colors.black.withOpacity(.8),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      AppText(
+                        text:
+                            'Yosemite National Park is located in central Sierra Nevada in the US state of California. Is is located near the wild protected areas.',
+                        color: AppColors.mainTextColor,
+                      ),
                     ],
                   ),
+                )),
+            Positioned(
+                bottom: 10,
+                left: 20,
+                right: 20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppButton(
+                      color: AppColors.textColor1,
+                      bgColor: Colors.white,
+                      borderColor: AppColors.textColor1,
+                      size: 55,
+                      icon: Icons.favorite_border,
+                      isIcon: true,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    const ResponsiveButton(
+                      isResponsive: true,
+                    )
+                  ],
                 ))
           ],
         ),
